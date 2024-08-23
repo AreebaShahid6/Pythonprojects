@@ -1,0 +1,143 @@
+import random
+import os
+
+def clear_terminal():
+    # For Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # For macOS/Linux
+    else:
+        os.system('clear')
+
+# Example usage
+print("Welcome to the game!")
+input("Press Enter to start...")
+clear_terminal()
+print("This is the next page of the game.")
+
+# Data of people
+DATA = [
+    {
+        "Name": "Instagram",
+        "Followers": "676M",
+        
+        "Country": "US",
+        "Description": "Social Platform"
+    },
+    {
+        "Name": "Ayeza Khan",
+        "Followers": "14.1M",
+        "Country": "Pakistan",
+        "Description": "A Pakistani drama actor"
+    },
+    {
+        "Name": "Aymen Khan",
+        "Followers": "12.2M",
+        "Country": "Pakistan",
+        "Description": "A Pakistani drama actor"
+    },
+    {
+        "Name": "Alia Bhatt",
+        "Followers": "85.2M",
+        "Country": "India",
+        "Description": "A Bollywood actor"
+    },
+    {
+        "Name": "Ronaldo",
+        "Followers": "636M",
+        "Country": "Portugal",
+        "Description": "A footballer"
+    },
+    {
+        "Name": "Zayn Malik",
+        "Followers": "51.8M",
+        "Country": "United Kingdom",
+        "Description": "A British Actor"
+    },
+    {
+        "Name": "Babar Azam",
+        "Followers": "5.3M",
+        "Country": "Pakistan",
+        "Description": "A Pakistani cricketer"
+    },
+    {
+        "Name": "Shadab Khan",
+        "Followers": "2M",
+        "Country": "Pakistan",
+        "Description": "A Pakistani cricketer"
+    },
+    {
+        "Name": "Ducky Bhai",
+        "Followers": "3M",
+        "Country": "Pakistan",
+        "Description": "A Pakistani YouTuber"
+    },
+    {
+        "Name": "Triggered Insaan",
+        "Followers": "10M",
+        "Country": "India",
+        "Description": "An Indian YouTuber"
+    },
+]
+
+# Name of the game
+Name = """_    _ _       _     _       
+ | |  | (_)     | |   (_)      
+ | |__| |_  __ _| |__  _ _ __  
+ |  __  | |/ _` | '_ \| | '__| 
+ | |  | | | (_| | | | | | |    
+ |_|  |_|_|\__, |_| |_|_|_|    
+ | |        __/ |              
+ | |     __|___/    _____ _ __ 
+ | |    / _ \ \ /\ / / _ \ '__|
+ | |___| (_) \ V  V /  __/ |   
+ |______\___/ \_/\_/ \___|_|  """
+
+print(Name)
+verses = """
+   __   _____ 
+  \\ \\ / / __|
+   \\ V /\\__ \\
+    \\_/ |___/
+"""
+
+
+            
+
+def compare_followers(A, B):
+    followers_A = float(A['Followers'][:-1])
+    followers_B = float(B['Followers'][:-1])
+    if followers_A > followers_B:
+        return "A"
+    elif followers_B > followers_A:
+        return "B"
+    else:
+        return "Equal"
+
+score = 0
+game_end = False
+
+while not game_end:
+    A = random.choice(DATA)
+    B = random.choice(DATA)
+    
+    # Ensure A and B are not the same
+    while A == B:
+        B = random.choice(DATA)
+    
+    print(f"\nCompare A: {A['Name']}, from {A['Country']}, {A['Description']}")
+    print(verses)
+    print(f"Compare B: {B['Name']}, from {B['Country']}, {B['Description']}")
+    
+    guess = input("Whose followers are greater, A or B? ").strip().upper()
+    correct_answer = compare_followers(A, B)
+    
+    if guess == correct_answer:
+        score += 1
+        print(f"Correct! Your current score is: {score}")
+        input("Press Enter to continue...")
+        clear_terminal()  # Clear the terminal after each correct answer
+    else:
+        print(f"Wrong! The correct answer was {correct_answer}.")
+        print(f"Game Over! Your final score is: {score}")
+        game_end = True
