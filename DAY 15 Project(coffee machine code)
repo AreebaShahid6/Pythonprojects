@@ -1,0 +1,108 @@
+MENU = {
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "coffee": 18,
+        },
+        "cost": 1.5,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "milk": 150,
+            "coffee": 24,
+        },
+        "cost": 2.5,
+    },
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "milk": 100,
+            "coffee": 24,
+        },
+        "cost": 3.0,
+    }
+}
+
+resources = {
+    "water": 300,
+    "milk": 200,
+    "coffee": 100,
+}
+
+def check_ingredients(choice):
+    """Check if there are enough resources to make the selected drink."""
+    if choice in MENU:
+        drink = MENU[choice]
+        for item in drink["ingredients"]:
+            if resources[item] < drink["ingredients"][item]:
+                return False
+        return True
+    return False
+
+def costt(choice, pennies, quarters, nickels, dimes):
+    """Calculate the total money inserted and check if it covers the cost."""
+    coffee_cost = MENU[choice]["cost"]
+    new_penny = pennies * 0.01
+    new_quarters = quarters * 0.25
+    new_nickels = nickels * 0.05
+    new_dimes = dimes * 0.10
+    
+    total = new_penny + new_quarters + new_nickels + new_dimes
+    if total > coffee_cost:
+        change = total - coffee_cost
+        print(f'Here is your change: ${change:.2f}')
+        return True
+    elif total < coffee_cost:
+        print("Sorry, your money is not enough.")
+        return False
+    else:
+        return True
+
+def make_coffee(choice):
+    """Make the coffee if resources are sufficient and handle user report and coffee making."""
+    if choice == "report":
+        print(f'Water: {resources["water"]}ml')
+        print(f'Milk: {resources["milk"]}ml')
+        print(f'Coffee: {resources["coffee"]}g')
+        return
+    
+    if choice in MENU:
+        if not check_ingredients(choice):
+            print("Sorry, there are not enough ingredients.")
+            return
+        
+        # Proceed to collect money
+        print("Please insert coins")
+        dimes = int(input("How many dimes? "))
+        quarters = int(input("How many quarters? "))
+        nickels = int(input("How many nickels? "))
+        pennies = int(input("How many pennies? "))
+        
+        if costt(choice, pennies, quarters, nickels, dimes):
+            # Deduct the required ingredients from resources
+            drink = MENU[choice]
+            for item in drink["ingredients"]:
+                resources[item] -= drink["ingredients"][item]
+            print("Enjoy your coffee")
+        else:
+            print("Transaction failed.")
+        
+        check_current_report = input("Do you want to check the report? (yes/no): ").lower()
+        if check_current_report == "yes":
+            make_coffee("report")
+    
+    else:
+        print("Invalid choice.")
+
+order_again = True
+
+while order_again:
+    choice = input("What would you like? (espresso/latte/cappuccino): ").lower()
+    
+    if choice == "report" or check_ingredients(choice):
+        make_coffee(choice)
+    else:
+        print("Sorry, we are out of ingredients for that drink.")
+    
+    order_again = input("Do you want to order again? (yes/no): ").lower() == "yes"
